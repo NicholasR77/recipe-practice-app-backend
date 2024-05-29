@@ -8,6 +8,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('Hello World 5!');
+});
+
 app.post('/recipes', (req, res) => {
   console.log("🚀 ~ app.get ~ req:", req.body)
 });
