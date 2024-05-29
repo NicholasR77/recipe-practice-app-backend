@@ -5,13 +5,14 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT}:${PORT}"
+      - "${APP_PORT}:${APP_PORT}"
     environment:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_HOST=${DB_HOST}
-      - PORT=${PORT}
+      - DB_PORT=${DB_PORT}
+      - APP_PORT=${APP_PORT}
     volumes:
       - .:/code
       - /code/node_modules
