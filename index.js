@@ -24,6 +24,17 @@ app.post('/recipes', async (req, res) => {
   }
 });
 
+app.get('/recipes', async (req, res) => {
+  try {
+    const recipes = await Recipe.findAll();
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    res.status(500).send('Failed to fetch recipes');
+  }
+});
+
 app.listen(port, async () => {
   console.log(`Server is running on http://localhost:${port}`);
 
