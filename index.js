@@ -1,47 +1,25 @@
-import 'dotenv/config';
 import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
-
 import sequelize from './config/database.js';
-import Recipe from './models/recipe.js';
+import recipeRoutes from './routes/recipes.js';
+
+dotenv.config();
 
 const app = express();
-const port = process.env.APP_PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
 
-app.post('/recipes', async (req, res) => {
-  try {
-    const { title, description } = req.body;
-
-    const recipe = await Recipe.create({ title, description });
-
-    res.status(201).json(recipe);
-  } catch (error) {
-    console.error('Error creating recipe:', error);
-    res.status(500).send('Failed to create recipe');
-  }
-});
-
-app.get('/recipes', async (req, res) => {
-  try {
-    const recipes = await Recipe.findAll();
-
-    res.status(200).json(recipes);
-  } catch (error) {
-    console.error('Error fetching recipes:', error);
-    res.status(500).send('Failed to fetch recipes');
-  }
-});
+app.use('/recipes', recipeRoutes);
 
 app.listen(port, async () => {
-  console.log(`Server is running on http://localhost:${port}`);
-
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync(); // Synchronize all models with the database
     console.log('Database connected and models synchronized');
+    console.log(`Server is running on http://localhost:${port}`);
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
