@@ -20,6 +20,13 @@ spec:
         image: nl7robbins/recipe-practice-app:latest
         ports:
         - containerPort: 3000
+        resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "500Mi"
+              cpu: "2000m"
         env:
           - name: DB_USER
             valueFrom:
