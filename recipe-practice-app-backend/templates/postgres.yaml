@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,9 +27,33 @@ spec:
             - configMapRef:
               name: config
           volumeMounts:
-          - name: {{ .Values.postgres.volumeMounts.name }}
-            mountPath: {{ .Values.postgres.volumeMounts.mountPath }}
+          - name: {{ .Values.postgres.volumes.name }}
+            mountPath: {{ .Values.postgres.volumes.mountPath }}
       volumes:
       - name: {{ .Values.postgres.volumes.name }}
         persistentVolumeClaim:
           claimName: {{ .Values.postgres.volumes.persistentVolumeClaim.claimName }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.postgres.volumes.persistentVolumeClaim.claimName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes: {{ .Values.postgres.volumes.persistentVolumeClaim.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.postgres.volumes.persistentVolumeClaim.storage }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-postgres-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - port: {{ .Values.postgres.port }}
+      targetPort: {{ .Values.postgres.port }}
+  selector:
+    app: postgres

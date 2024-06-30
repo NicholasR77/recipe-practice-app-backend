@@ -29,10 +29,10 @@ postgres:
     limits:
       memory: "500Mi"
       cpu: "2000m"
-  volumeMounts:
-    name: postgres-storage
-    mountPath: /var/lib/postgresql/data
   volumes:
+    mountPath: /var/lib/postgresql/data
     name: postgres-storage
     persistentVolumeClaim:
       claimName: postgres-pvc
+      accessModes: ReadWriteOnce
+      storage: 1Gi
