@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deployment
+  name: {{ .Release.Name }}-app-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.app.autoscaling.enabled }}
+  replicas: {{ .Values.app.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
@@ -16,20 +16,22 @@ spec:
       labels:
         app: app
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.app.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Release.Name }}-app
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
           ports:
-            - containerPort: {{ .Values.postgres.appPort }}
+            - containerPort: {{ .Values.app.port }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.app.resources | nindent 12 }}
           envFrom:
             - secretRef:
                 name: secrets
+            - configMapRef:
+              name: config
 ---
 apiVersion: v1
 kind: Service
@@ -38,7 +40,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-    - port: {{ .Values.postgres.appPort }}
-      targetPort: {{ .Values.postgres.appPort }}
+    - port: {{ .Values.app.port }}
+      targetPort: {{ .Values.app.port }}
   selector:
     app: app

@@ -1,20 +1,38 @@
-replicaCount: 1
-autoscaling:
-  enabled: false
+app:
+  port: 3000
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+  image:
+    repository: "nl7robbins/recipe-practice-app"
+    tag: "latest"
+  imagePullSecrets:
+    name: regcred
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "500Mi"
+      cpu: "2000m"
 postgres:
   name: "recipe_practice_app"
   host: "postgres"
-  port: "6543"
-  appPort: "3000"
-imagePullSecrets:
-  - name: regcred
-image:
-  repository: "nl7robbins/recipe-practice-app"
-  tag: "latest"
-resources:
-  requests:
-    memory: "64Mi"
-    cpu: "250m"
-  limits:
-    memory: "500Mi"
-    cpu: "2000m"
+  port: 6543
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "500Mi"
+      cpu: "2000m"
+  volumeMounts:
+    name: postgres-storage
+    mountPath: /var/lib/postgresql/data
+  volumes:
+    name: postgres-storage
+    persistentVolumeClaim:
+      claimName: postgres-pvc

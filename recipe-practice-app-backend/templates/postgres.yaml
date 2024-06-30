@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-postgres-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.postgres.replicaCount }}
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-postgres
+          image: postgres:latest
+          ports:
+            - containerPort: {{ .Values.app.port }}
+          resources:
+            {{- toYaml .Values.app.resources | nindent 12 }}
+          envFrom:
+            - secretRef:
+                name: secrets
+            - configMapRef:
+              name: config
+          volumeMounts:
+          - name: {{ .Values.postgres.volumeMounts.name }}
+            mountPath: {{ .Values.postgres.volumeMounts.mountPath }}
+      volumes:
+      - name: {{ .Values.postgres.volumes.name }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.postgres.volumes.persistentVolumeClaim.claimName }}

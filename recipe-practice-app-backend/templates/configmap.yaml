@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-configmap
-data:
-  dbname: "recipe_practice_app"
-  dbhost: "postgres"
-  dbport: "6543"
-  appport: "3000"
