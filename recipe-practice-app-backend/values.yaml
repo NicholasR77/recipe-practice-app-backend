@@ -1,7 +1,21 @@
 namespace: "local"
 replicaCount: 1
+autoscaling:
+  enabled: false
 postgres:
   name: "recipe_practice_app"
   host: "postgres"
   port: "6543"
   appPort: "3000"
+imagePullSecrets:
+  - name: regcred
+image:
+  repository: "nl7robbins/recipe-practice-app"
+  tag: "latest"
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "500Mi"
+    cpu: "2000m"
