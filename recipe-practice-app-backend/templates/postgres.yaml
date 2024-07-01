@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-postgres-deployment
+  name: postgres-deployment
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.postgres.replicaCount }}
@@ -15,7 +15,7 @@ spec:
         app: postgres
     spec:
       containers:
-        - name: {{ .Release.Name }}-postgres
+        - name: postgres
           image: postgres:latest
           ports:
             - containerPort: {{ .Values.app.port }}
@@ -40,7 +40,8 @@ metadata:
   name: {{ .Values.postgres.volumes.persistentVolumeClaim.claimName }}
   namespace: {{ .Release.Namespace }}
 spec:
-  accessModes: {{ .Values.postgres.volumes.persistentVolumeClaim.accessModes }}
+  accessModes: 
+  - {{ .Values.postgres.volumes.persistentVolumeClaim.accessModes }}
   resources:
     requests:
       storage: {{ .Values.postgres.volumes.persistentVolumeClaim.storage }}
@@ -49,7 +50,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-postgres-service
+  name: postgres-service
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
