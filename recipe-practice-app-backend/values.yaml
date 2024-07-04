@@ -16,8 +16,7 @@ app:
       memory: "500Mi"
       cpu: "2000m"
 postgres:
-  name: "recipe_practice_app"
-  host: "postgres"
+  host: "postgres-service-new"
   port: 6543
   replicaCount: 1
   autoscaling:
@@ -33,6 +32,6 @@ postgres:
     mountPath: /var/lib/postgresql/data
     name: postgres-storage
     persistentVolumeClaim:
-      claimName: postgres-pvc
+      claimName: postgres-pvc-new
       accessModes: ReadWriteOnce
       storage: 1Gi

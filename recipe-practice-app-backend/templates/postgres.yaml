@@ -18,14 +18,12 @@ spec:
         - name: postgres
           image: postgres:latest
           ports:
-            - containerPort: {{ .Values.app.port }}
+            - containerPort: 5432
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
           envFrom:
             - secretRef:
-                name: secrets
-            - configMapRef:
-              name: config
+                  name: secrets
           volumeMounts:
           - name: {{ .Values.postgres.volumes.name }}
             mountPath: {{ .Values.postgres.volumes.mountPath }}
@@ -50,11 +48,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service
+  name: postgres-service-new
   namespace: {{ .Release.Namespace }}
 spec:
+  type: LoadBalancer
   ports:
-    - port: {{ .Values.postgres.port }}
-      targetPort: {{ .Values.postgres.port }}
+  - port: 5432
+    targetPort: 5432
   selector:
     app: postgres

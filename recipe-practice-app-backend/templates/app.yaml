@@ -16,31 +16,33 @@ spec:
       labels:
         app: app
     spec:
-      {{- with .Values.app.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: regcred
       containers:
         - name: app
           image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
           ports:
-            - containerPort: {{ .Values.app.port }}
+            - containerPort: 3000
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
+          env:
+          - name: POSTGRES_HOST
+            value: "postgres-service-new"
+          - name: POSTGRES_PORT
+            value: "5432"
           envFrom:
             - secretRef:
-                name: secrets
-            - configMapRef:
-              name: config
+                  name: secrets
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: app-service-new
   namespace: {{ .Release.Namespace }}
 spec:
+  type: LoadBalancer
   ports:
-    - port: {{ .Values.app.port }}
-      targetPort: {{ .Values.app.port }}
+  - port: 3000
+    targetPort: 3000
   selector:
-    app: app
+    app: postgres
