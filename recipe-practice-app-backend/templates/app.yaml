@@ -21,15 +21,18 @@ spec:
       containers:
         - name: app
           image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
           env:
           - name: POSTGRES_HOST
-            value: "host.docker.internal"
+            value: {{ .Values.postgres.host | quote }}
           - name: POSTGRES_PORT
-            value: "5432"
+            value: {{ .Values.postgres.port | quote }}
+          - name: PORT
+            value: "3000"
           envFrom:
             - secretRef:
                   name: secrets
@@ -45,4 +48,4 @@ spec:
   - port: 3000
     targetPort: 3000
   selector:
-    app: postgres
+    app: app
