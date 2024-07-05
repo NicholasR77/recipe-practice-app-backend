@@ -27,7 +27,7 @@ spec:
             {{- toYaml .Values.app.resources | nindent 12 }}
           env:
           - name: POSTGRES_HOST
-            value: "postgres-service-new"
+            value: "host.docker.internal"
           - name: POSTGRES_PORT
             value: "5432"
           envFrom:
