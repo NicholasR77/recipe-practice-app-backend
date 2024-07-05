@@ -14,12 +14,12 @@ app.use(cors());
 
 app.use('/recipes', recipeRoutes);
 
-app.listen(port, async () => {
+app.listen(port, '0.0.0.0', async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync(); // Synchronize all models with the database
     console.log('Database connected and models synchronized');
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log('Server is running');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
