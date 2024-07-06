@@ -12,4 +12,7 @@ spec:
   minReplicas: {{ .Values.app.autoscaling.min }}
   maxReplicas: {{ .Values.app.autoscaling.max }}
   targetCPUUtilizationPercentage: {{ .Values.app.autoscaling.cpuUtilizationTarget }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: {{ .Values.app.autoscaling.downscaleStabilizationWindow }}
 {{- end }}

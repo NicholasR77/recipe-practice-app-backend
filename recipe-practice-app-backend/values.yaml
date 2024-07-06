@@ -6,6 +6,7 @@ app:
     min: 1
     max: 5
     cpuUtilizationTarget: 50
+    downscaleStabilizationWindow: 30 # Lower value used for testing purposes
   image:
     repository: "nl7robbins/recipe-practice-app"
     tag: "latest"
@@ -19,5 +20,5 @@ app:
       memory: "500Mi"
       cpu: "2000m"
 postgres:
-  host: "host.docker.internal"
+  host: "192.168.1.27"
   port: "5432"
