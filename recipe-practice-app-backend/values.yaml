@@ -2,7 +2,10 @@ app:
   port: 3000
   replicaCount: 1
   autoscaling:
-    enabled: false
+    enabled: true
+    min: 1
+    max: 5
+    cpuUtilizationTarget: 50
   image:
     repository: "nl7robbins/recipe-practice-app"
     tag: "latest"
