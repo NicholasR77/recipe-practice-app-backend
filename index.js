@@ -14,6 +14,7 @@ app.use(cors());
 
 app.use('/', (_, res) => res.send('Welcome to the Recipe Practice App'));
 app.get('/healthz', (req, res) => {
+  console.log('Health check');
   res.status(200).send('OK');
 });
 app.use('/recipes', recipeRoutes);
