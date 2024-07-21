@@ -24,6 +24,27 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+              host: localhost
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+              host: localhost
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /startup
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 30
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
           env:

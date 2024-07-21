@@ -20,5 +20,5 @@ app:
       memory: "500Mi"
       cpu: "2000m"
 postgres:
-  host: "192.168.1.27"
+  host: "192.168.1.100"
   port: "5432"
