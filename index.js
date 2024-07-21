@@ -12,10 +12,21 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.use('/healthz', (req, res) => {
+app.use('/healthz', (_, res) => {
   console.log('Health check');
   res.status(200).send('OK');
 });
+
+app.use('/ready', (_, res) => {
+  console.log('Readiness check');
+  res.status(200).send('OK');
+});
+
+app.use('/startup', (_, res) => {
+  console.log('Startup check');
+  res.status(200).send('OK');
+});
+
 app.use('/recipes', recipeRoutes);
 
 app.listen(port, '0.0.0.0', async () => {
