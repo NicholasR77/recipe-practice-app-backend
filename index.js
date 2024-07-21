@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.use('/', (_, res) => res.send('Welcome to the Recipe Practice App'));
 app.use('/healthz', (req, res) => {
   console.log('Health check');
   res.status(200).send('OK');
